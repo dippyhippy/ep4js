@@ -1,0 +1,57 @@
+
+.boxWrapper {
+  float:left;
+  padding:1em; 
+}
+
+#topIndividuals {
+  font-family:courier;
+  font-size:8pt;
+  margin:1em;
+  border:1px solid #ddd;
+  padding:1em;
+}
+
+#individualDetail {
+  font-family:courier;
+  font-size:8pt;
+  margin:1em;
+  border:1px solid #ddd;
+  padding:1em; 
+}
+
+#chart {
+  margin:1em;
+  border:1px solid #ddd;
+  float:left;
+  padding:1em;
+}
+
+#progressBar {
+  display:none;
+	font-family:courier;
+	font-size:8pt;
+  margin:0.5em;
+  padding:0.25em;
+  border:1px solid #ddd;
+  width:200px;
+}
+
+#progressBarInner {
+  background: #eee;
+  padding:0.25em;
+}
+
+#runControls {
+  margin:0.5em;
+  padding:0.25em;
+  height:40px;
+}
+
+#runControlButtons {
+
+}
+
+#stopButton {
+  display: none;
+}
