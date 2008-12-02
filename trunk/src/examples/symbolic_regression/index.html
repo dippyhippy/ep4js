@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+  <link rel="stylesheet" href="../../css/boilerplate.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<title>index</title>
+	<script type="text/javascript" src="../../js/ep4js.js"></script>
+	<script type="text/javascript" src="../../js/distribution.js"></script>
+	<script type="text/javascript" src="../../js/boilerplate.js"></script>
+  <script type="text/javascript" src="../../js/asyncworker.js"></script>
+  <script type="text/javascript" src="function.js"></script>
+  <script type="text/javascript" src="regression.js"></script>
+
+  <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+  <script type="text/javascript">
+google.load("visualization", "1", {packages:["scatterchart"]});
+
+// Create a set of random function samples
+// TODO: replace this with a free-text input for copy and past from spreadsheets.
+var GOLD_FN = {};
+var lastN = 0;
+for (var i=0; i<10; i+= 0.2) {
+  GOLD_FN[i] = lastN = lastN+(5-Math.random()*10);
+}
+
+var chart = null;
+
+CHUNK_SIZE = 1;
+
+function showLineDetail(line) {
+ 
+  // Render the current best individual over the same domain as GOLD_FN.
+ 	var r2 = {};
+ 	for (var x_val in GOLD_FN) {
+ 	  var x = parseFloat(x_val);  // so stupid.
+ 	  r2[x_val] = line.program.eval(x);
+ 	}
+	
+	// Render a chart comparing the GOLDEN_FN to the current best individual.
+	var data = new google.visualization.DataTable();
+	data.addColumn('number', 'x');
+  data.addColumn('number', 'target');
+  data.addColumn('number', 'best individual');
+	data.addRows(100);
+	var i=0;
+	for (var x_val in GOLD_FN) {
+		var pX = parseFloat(x_val);
+		var pFx = parseFloat(GOLD_FN[x_val]);
+		if (!isNaN(pX) && !isNaN(pFx) && (!isNaN(r2[x_val]))) {
+			data.setValue(i, 0, pX);
+			data.setValue(i, 1, pFx);
+			data.setValue(i, 2, r2[x_val]);
+		}
+		i++;
+	}
+  
+  if (chart == null) {
+    chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+  }
+  
+  chart.draw(data, {width: 600, height: 300, pointSize: 0, lineSize:1});	
+	
+	// Show the actual function of the best current individual
+	var div = $('individualDetail');
+  div.innerHTML = line.program.serialize();
+}
+
+function showChart() { 
+  // TODO: this should show the stats of the population, not the best/GOLDEN_FN chart.
+}
+</script>
+
+</head>
+
+<body onload="init(functionCross, functionMutate, functionEvaluate, functionNewProgram);">
+<div id="debug"></div>
+<div id='chart_div' width="600" height="150"></div>
+<div id="runControls">
+  <div id="runControlButtons">
+    <button id="runButton" onclick="run()">Run</button>
+    <button id="stopButton" onclick="stop()">Stop</button>
+  </div>
+  <div id="progressBar"><div id="progressBarInner"></div></div>
+  <div style="clear:both"></div>
+</div>
+
+<div>
+  Population Size: <input type="text" id="populationSize"/>
+</div>
+
+<div>
+  Mutation Rate: <input type="text" id="mutationRate"/>
+</div>
+
+<div>
+  Generations: <input type="text" id="generations"/>
+</div>
+
+<div>
+  Maximize: <input type="checkbox" id="maximize"/>
+</div>
+
+<div>
+  <div class='boxWrapper'>Best Individual
+  <div id="individualDetail"></div>
+  </div>
+  <div style="clear:both"></div>
+  <div class='boxWrapper'>Top Individuals
+  <div id="topIndividuals"></div>
+  </div>
+  <div style="clear:both"></div>
+</div>
+
+</body>
+</html>
