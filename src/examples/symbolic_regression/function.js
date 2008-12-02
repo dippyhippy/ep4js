@@ -13,7 +13,7 @@ ep4js.example.Function = function(op, a, b) {
 	this.b = b; 
 };
 
-ep4js.example.Function.prototype.MAX_RANDOM = 10;
+ep4js.example.Function.MAX_RANDOM = 10;
 
 ep4js.example.Function.prototype.toString = function() {
 	return this.op;
@@ -133,8 +133,8 @@ ep4js.example.Function.prototype.constOrDepthFirst_ = function(f, fn) {
 ep4js.example.Function.randomFunction = function(maxDepth) {
 	if (maxDepth == 0) {
 		if (Math.random() < 0.5) {
-			return this.MAX_RANDOM/2 - 
-				Math.random()*this.MAX_RANDOM;
+			return ep4js.example.Function.MAX_RANDOM/2 - 
+				Math.random()*ep4js.example.Function.MAX_RANDOM;
 		} else {
 			return new ep4js.example.Function('x');
 		}
